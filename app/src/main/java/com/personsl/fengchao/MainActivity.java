@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.personsl.fengchao.Utils.StatusBarUtil;
+import com.personsl.fengchao.activity.BaseActivity;
 import com.personsl.fengchao.activity.PersonInfo;
 import com.personsl.fengchao.fragment.EarthFragment;
 import com.personsl.fengchao.fragment.FireFragment;
@@ -34,7 +37,7 @@ import butterknife.OnClick;
 
 ;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, BottomNavigationBar.OnTabSelectedListener {
     @BindView(R.id.activity_main_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.lv_left_menu)
@@ -58,19 +61,15 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private MenuItem mItemMenuRefresh;
     private MenuItem mItemMenuMy;
     private MenuItem mItemMenuAbout;
-    private Context mContext;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mContext = this;
-        ButterKnife.bind(this);
-        initView();
-        setDefaultFragment();
+    public int getLayoutId() {
+        return R.layout.activity_main;
     }
 
-    private void initView() {
+    protected void initView() {
+        SetTranslanteBar();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
@@ -119,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 .addItem(new BottomNavigationItem(R.mipmap.ic_launcher, "Earth"))
                 .initialise();
         mNavigationBar.setTabSelectedListener(this);
+        setDefaultFragment();
     }
 
     private void setDefaultFragment() {

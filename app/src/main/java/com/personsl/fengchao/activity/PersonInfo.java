@@ -1,23 +1,16 @@
 package com.personsl.fengchao.activity;
-
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.personsl.fengchao.R;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by 冯超 on 2016/12/28.
  */
-public class PersonInfo extends AppCompatActivity {
+public class PersonInfo extends BaseActivity {
     @BindView(R.id.title_tv)
     TextView mTitle;
     @BindView(R.id.activity_main_toolbar)
@@ -26,14 +19,11 @@ public class PersonInfo extends AppCompatActivity {
     ImageButton mBack;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.person_info);
-        ButterKnife.bind(this);
-        initView();
+    public int getLayoutId() {
+        return R.layout.person_info;
     }
-
-    private void initView() {
+    public void initView() {
+        SetTranslanteBar();
         mToolbar.setTitle("");
         mTitle.setText("个人信息");
         mBack.setVisibility(View.VISIBLE);
