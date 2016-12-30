@@ -23,7 +23,7 @@ public class PersonInfo extends BaseActivity {
         return R.layout.person_info;
     }
     public void initView() {
-        SetTranslanteBar();
+//      SetTranslanteBar();
         mToolbar.setTitle("");
         mTitle.setText("个人信息");
         mBack.setVisibility(View.VISIBLE);

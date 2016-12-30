@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     protected void initView() {
-        SetTranslanteBar();
+//        SetTranslanteBar();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        mGoldFragment = GoldFragment.newInstance("金");
+        mGoldFragment = GoldFragment.newInstance();
         transaction.replace(R.id.main_container, mGoldFragment);
         transaction.commit();
     }
@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         switch (position) {
             case 0:
                 if (mGoldFragment == null) {
-                    mGoldFragment = mGoldFragment.newInstance("金");
+                    mGoldFragment = mGoldFragment.newInstance();
                 }
                 mItemMenuSearch.setVisible(true);
                 mItemMenuSetting.setVisible(false);
@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
                 mItemMenuMy.setVisible(false);
                 mItemMenuAbout.setVisible(false);
                 if (mWoodFragment == null) {
-                    mWoodFragment = WoodFragment.newInstance("木");
+                    mWoodFragment = WoodFragment.newInstance();
                 }
                 transaction.replace(R.id.main_container, mWoodFragment);
                 break;
@@ -212,7 +212,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
                 mItemMenuMy.setVisible(false);
                 mItemMenuAbout.setVisible(false);
                 if (mWaterFragment == null) {
-                    mWaterFragment = WaterFragment.newInstance("水");
+                    mWaterFragment = WaterFragment.newInstance();
                 }
                 transaction.replace(R.id.main_container, mWaterFragment);
                 break;
@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
                 mItemMenuMy.setVisible(true);
                 mItemMenuAbout.setVisible(false);
                 if (mFireFragment == null) {
-                    mFireFragment = FireFragment.newInstance("火");
+                    mFireFragment = FireFragment.newInstance();
                 }
                 transaction.replace(R.id.main_container, mFireFragment);
                 break;
@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
                 mItemMenuMy.setVisible(true);
                 mItemMenuAbout.setVisible(true);
                 if (mEarthFragment == null) {
-                    mEarthFragment = EarthFragment.newInstance("土");
+                    mEarthFragment = EarthFragment.newInstance();
                 }
                 transaction.replace(R.id.main_container, mEarthFragment);
                 break;
