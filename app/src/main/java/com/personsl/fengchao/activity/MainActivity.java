@@ -1,14 +1,12 @@
-package com.personsl.fengchao;
+package com.personsl.fengchao.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,17 +20,18 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.personsl.fengchao.Utils.StatusBarUtil;
-import com.personsl.fengchao.activity.BaseActivity;
-import com.personsl.fengchao.activity.PersonInfo;
+import com.personsl.fengchao.Adapter.MyAdapter;
+import com.personsl.fengchao.R;
 import com.personsl.fengchao.fragment.EarthFragment;
 import com.personsl.fengchao.fragment.FireFragment;
 import com.personsl.fengchao.fragment.GoldFragment;
 import com.personsl.fengchao.fragment.WaterFragment;
 import com.personsl.fengchao.fragment.WoodFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 ;
@@ -41,7 +40,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     @BindView(R.id.activity_main_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.lv_left_menu)
-    ListView mLeftList;
+    RecyclerView mRecyclerView;
     @BindView(R.id.dl_left)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.bottom_navigation_bar)
@@ -61,6 +60,8 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     private MenuItem mItemMenuRefresh;
     private MenuItem mItemMenuMy;
     private MenuItem mItemMenuAbout;
+    private LinearLayoutManager mLayoutManager;
+    private MyAdapter mAdapter;
 
 
     @Override
@@ -69,12 +70,10 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     protected void initView() {
-//        SetTranslanteBar();
+//      SetTranslanteBar();
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         mToolbar.setOnMenuItemClickListener(this);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
-        mLeftList = (ListView) findViewById(R.id.lv_left_menu);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //创建返回键，并实现打开关/闭监听
@@ -119,6 +118,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
                 .initialise();
         mNavigationBar.setTabSelectedListener(this);
         setDefaultFragment();
+        initLeftMenu();
     }
 
     private void setDefaultFragment() {
@@ -127,6 +127,38 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         mGoldFragment = GoldFragment.newInstance();
         transaction.replace(R.id.main_container, mGoldFragment);
         transaction.commit();
+    }
+
+    private void initLeftMenu() {
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        //创建并设置Adapter
+        mAdapter = new MyAdapter(getLeftData());
+        mAdapter.setOnItemClickListener(new MyAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(int data) {
+                switch (data) {
+                    case 0:
+                        Intent intent = new Intent(mContext, PersonInfo.class);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private List<String> getLeftData() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("我的钱包");
+        list.add("我的消息");
+        list.add("我的收藏");
+        list.add("我的商城");
+        list.add("会员中心");
+        list.add("游戏中心");
+        return list;
     }
 
     @Override
