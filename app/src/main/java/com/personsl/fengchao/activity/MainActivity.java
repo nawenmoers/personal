@@ -1,13 +1,12 @@
 package com.personsl.fengchao.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -15,32 +14,41 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.personsl.fengchao.Adapter.MyAdapter;
 import com.personsl.fengchao.R;
 import com.personsl.fengchao.fragment.EarthFragment;
 import com.personsl.fengchao.fragment.FireFragment;
 import com.personsl.fengchao.fragment.GoldFragment;
 import com.personsl.fengchao.fragment.WaterFragment;
 import com.personsl.fengchao.fragment.WoodFragment;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+;
 
 public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, BottomNavigationBar.OnTabSelectedListener {
     @BindView(R.id.activity_main_toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.lv_left_menu)
+    RecyclerView mRecyclerView;
     @BindView(R.id.dl_left)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar mNavigationBar;
     @BindView(R.id.main_container)
     FrameLayout mainContainer;
-    @BindView(R.id.navigation_view)
-    NavigationView mNavigationView;
+    @BindView(R.id.left_icon)
+    TextView leftIcon;
     private ActionBarDrawerToggle mDrawerToggle;
     private GoldFragment mGoldFragment;
     private WoodFragment mWoodFragment;
@@ -52,6 +60,8 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     private MenuItem mItemMenuRefresh;
     private MenuItem mItemMenuMy;
     private MenuItem mItemMenuAbout;
+    private LinearLayoutManager mLayoutManager;
+    private MyAdapter mAdapter;
 
 
     @Override
@@ -120,36 +130,35 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     private void initLeftMenu() {
-        View headerView = mNavigationView.getHeaderView(0);
-        headerView.setOnClickListener(new View.OnClickListener() {
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        //创建并设置Adapter
+        mAdapter = new MyAdapter(getLeftData());
+        mAdapter.setOnItemClickListener(new MyAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, PersonInfo.class);
-                startActivity(intent);
-            }
-        });
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.my_money:
+            public void onItemClick(int data) {
+                switch (data) {
+                    case 0:
                         Intent intent = new Intent(mContext, PersonInfo.class);
                         startActivity(intent);
                         break;
-                    case R.id.my_info:
-                        break;
-                    case R.id.my_collect:
-                        break;
-                    case R.id.my_shop:
-                        break;
-                    case R.id.vip_center:
-                        break;
-                    case R.id.game_center:
-                        break;
                 }
-                return true;
             }
         });
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private List<String> getLeftData() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("我的钱包");
+        list.add("我的消息");
+        list.add("我的收藏");
+        list.add("我的商城");
+        list.add("会员中心");
+        list.add("游戏中心");
+        return list;
     }
 
     @Override
@@ -277,10 +286,10 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     public void onTabReselected(int position) {
 
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
 
+    @OnClick(R.id.left_icon)
+    public void onClick() {
+        Intent intent = new Intent(mContext, PersonInfo.class);
+        startActivity(intent);
+    }
 }
