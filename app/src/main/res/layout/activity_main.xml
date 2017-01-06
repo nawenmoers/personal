@@ -30,15 +30,33 @@
         </LinearLayout>
     </LinearLayout>
     <!--侧滑菜单-->
-    <android.support.design.widget.NavigationView
-        android:background="@color/blue"
-        card_view:itemIconTint="@color/green"
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:fitsSystemWindows="true"
-        card_view:headerLayout="@layout/header_layout"
-        card_view:menu="@menu/left_menu"
-        />
+        android:layout_gravity="start"
+        android:background="@color/gray">
+        <android.support.v7.widget.CardView
+            card_view:cardBackgroundColor="@color/gray"
+            card_view:cardElevation="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/left_icon"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@mipmap/left_icon"
+                android:drawablePadding="10dp"
+                android:text="个人信息"
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/lv_left_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
